@@ -7,4 +7,6 @@
                  [org.clojure/clojurescript "1.9.227"]
                  [kunstmusik/pink "0.3.0"]
                  [kunstmusik/score "0.3.0"]]
-  :plugins [[lein-ancient "0.6.10"]])
+  :plugins [[lein-ancient "0.6.10"]]
+  :main v01.core
+  :profiles {:uberjar {:aot :all}})
