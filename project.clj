@@ -15,6 +15,7 @@
                  [kunstmusik/pink "0.3.0"]
                  [kunstmusik/score "0.3.0"]
                  [org.immutant/web "2.1.5"]
+                 [compojure "1.6.0-beta1"]
                  [carbon "0.2.0-SNAPSHOT"]]
 
   :plugins [[lein-ancient "0.6.10"]
