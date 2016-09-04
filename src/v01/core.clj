@@ -6,4 +6,4 @@
 
 (defn -main [& args]
   (web/start)
-  (sandbox/play))
+  (sandbox/play-sine))

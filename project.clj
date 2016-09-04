@@ -16,6 +16,7 @@
                  [kunstmusik/score "0.3.0"]
                  [org.immutant/web "2.1.5"]
                  [compojure "1.6.0-beta1"]
+                 [com.taoensso/sente "1.10.0"]
                  [carbon "0.2.0-SNAPSHOT"]]
 
   :plugins [[lein-ancient "0.6.10"]
@@ -31,7 +32,8 @@
   :profiles {:uberjar {:aot :all}
              :dev {:dependencies [[binaryage/devtools "0.8.1"]
                                   [figwheel-sidecar "0.5.6"]
-                                  [com.cemerick/piggieback "0.2.1"]]
+                                  [com.cemerick/piggieback "0.2.1"]
+                                  [ring/ring-devel "1.6.0-beta5"]]
                    ;; need to add dev source path here to get user.clj loaded
                    :source-paths ["src" "dev"]
                    ;; for CIDER

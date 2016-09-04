@@ -3,7 +3,8 @@
   (:require [pink.simple :as pink]
             [pink.oscillators :as osc]
             [pink.envelopes :as env]
-            [pink.util :as util]))
+            [pink.util :as util]
+            [v01.state :as state]))
 
 (pink/start-engine)
 
@@ -40,7 +41,21 @@
   (let [e (e)]
     (util/mul e (blit-pulse-fucking-awesome 80 e))))
 
-(defn play []
+(defn freq-gen []
+  (let [out ^doubles (util/create-buffer)]
+    (util/generator
+      [] []
+      (do
+        (aset out int-indx @state/freq)
+        (util/gen-recur))
+      (yield out))))
+
+(def gen1 (osc/sine2 (freq-gen)))
+
+(defn play-sine []
+  (pink/add-afunc gen1))
+
+(defn play-drone []
   (let [bpm 60
         tact (/ 60000 bpm)
         n 8
@@ -62,4 +77,4 @@
               (pink/add-afunc (gen2))))
           (Thread/sleep tact))))
     (Thread/sleep (* 16 tact))
-    (pink/stop-engine)))
+    #_(pink/stop-engine)))
