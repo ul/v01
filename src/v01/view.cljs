@@ -16,4 +16,4 @@
        :min       20
        :max       1760
        :value     @state/freq
-       :ev-change #(->> % (input-float) (reset! state/freq))}]]]])
+       :ev-input  #(->> % (input-float) (reset! state/freq))}]]]])

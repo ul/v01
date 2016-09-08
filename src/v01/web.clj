@@ -55,7 +55,7 @@
   "Given previous and current state, send the latter as `:v01.sync/set` event to all clients if changed."
   [_ _ prev state]
   (when (not= prev state)
-    (doseq [uid (get @connected-uids :any)]
+    (doseq [uid (->> state meta ::uid (disj (get @connected-uids :any)))]
       (chsk-send! uid [:v01.sync/set state]))))
 
 ;; Watch `v01.control/state` to broadcast updates
@@ -65,7 +65,7 @@
 (async/go-loop []
   (when-let [{:keys [uid] [id & data] :event} (async/<! ch-chsk)]
     (case id
-      :v01.sync/set (reset! control/state (first data))
+      :v01.sync/set (reset! control/state (with-meta (first data) {::uid uid}))
       :v01.sync/init (chsk-send! uid [:v01.sync/set @control/state])
       nil)
     (chsk-send! uid [::ok])
