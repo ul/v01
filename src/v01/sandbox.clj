@@ -4,7 +4,7 @@
             [pink.oscillators :as osc]
             [pink.envelopes :as env]
             [pink.util :as util]
-            [v01.state :as state]))
+            [v01.control :as control]))
 
 (pink/start-engine)
 
@@ -46,7 +46,7 @@
     (util/generator
       [] []
       (do
-        (aset out int-indx @state/freq)
+        (aset out int-indx (double (get @control/state :freq)))
         (util/gen-recur))
       (yield out))))
 

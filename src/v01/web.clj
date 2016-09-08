@@ -8,7 +8,7 @@
             [taoensso.sente :as sente]
             [taoensso.sente.server-adapters.immutant :refer (get-sch-adapter)]
             [clojure.core.async :as async]
-            [v01.state :as state]))
+            [v01.control :as control]))
 
 (let [{:keys [ch-recv send-fn connected-uids
               ajax-post-fn ajax-get-or-ws-handshake-fn]}
@@ -35,11 +35,16 @@
 
 ;;;;
 
+(add-watch control/state ::send
+  (fn [_ _ prev state]
+    (when (not= prev state)
+      (doseq [uid (get @connected-uids :any)]
+        (chsk-send! uid [:v01.sync/reset state])))))
+
 (async/go-loop []
-  (when-let [{:keys [uid] [id & data :as event] :event} (async/<! ch-chsk)]
-    (println event)
+  (when-let [{:keys [uid] [id & data] :event} (async/<! ch-chsk)]
     (case id
-      :v01.core/freq (reset! state/freq (double (first data)))
+      :v01.sync/reset (reset! control/state (first data))
       nil)
-    (chsk-send! uid event)
+    (chsk-send! uid [::ok])
     (recur)))
