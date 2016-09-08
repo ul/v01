@@ -3,6 +3,7 @@
   (:require [immutant.web :as web]
             [compojure.core :refer [defroutes GET POST]]
             ring.middleware.resource
+            ring.middleware.content-type
             ring.middleware.keyword-params
             ring.middleware.params
             [clojure.java.io :as io]
@@ -39,6 +40,7 @@
   "Middlewares pre-process request and post-process response for every route."
   (-> routes
       (ring.middleware.resource/wrap-resource "public")     ; serve static files from resources/public/
+      (ring.middleware.content-type/wrap-content-type)
       ring.middleware.keyword-params/wrap-keyword-params    ; transform query parameters keys to Clojure keywords
       ring.middleware.params/wrap-params))                  ; parse parameters
 
@@ -64,6 +66,7 @@
   (when-let [{:keys [uid] [id & data] :event} (async/<! ch-chsk)]
     (case id
       :v01.sync/set (reset! control/state (first data))
+      :v01.sync/init (chsk-send! uid [:v01.sync/set @control/state])
       nil)
     (chsk-send! uid [::ok])
     (recur)))

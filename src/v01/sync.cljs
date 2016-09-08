@@ -13,14 +13,16 @@
   (def chsk-state state)                                    ; Watchable, read-only atom
   )
 
-(add-watch control/state ::send
-  (fn [_ _ _ state]
-    (chsk-send! [::set state])))
-
 (go-loop []
-  (when-let [{[id & data] :event} (<! ch-chsk)]
+  (when-let [{[_ [id & data]] :event} (<! ch-chsk)]
     (case id
       ::set (reset! control/state (first data))
       nil)
     (recur)))
 
+(add-watch chsk-state ::init
+  (fn [_ _ {was-open :open?} {now-open :open?}]
+    (when (and now-open (not was-open))
+      (chsk-send! [::init]))))
+
+(add-watch control/state ::send #(chsk-send! [::set %4]))
