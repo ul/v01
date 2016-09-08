@@ -4,7 +4,7 @@
             [v01.control :as control]))
 
 (let [{:keys [chsk ch-recv send-fn state]}
-      (sente/make-channel-socket! "/chsk"                   ; Note the same path as before
+      (sente/make-channel-socket! "/ws"                     ; Note the same path as before
                                   {:type :auto              ; e/o #{:auto :ajax :ws}
                                    })]
   (def chsk chsk)
@@ -15,12 +15,12 @@
 
 (add-watch control/state ::send
   (fn [_ _ _ state]
-    (chsk-send! [::reset state])))
+    (chsk-send! [::set state])))
 
 (go-loop []
   (when-let [{[id & data] :event} (<! ch-chsk)]
     (case id
-      ::reset (reset! control/state (first data))
+      ::set (reset! control/state (first data))
       nil)
     (recur)))
 
