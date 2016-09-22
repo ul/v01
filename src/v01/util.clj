@@ -16,6 +16,9 @@
        (map deref!*!)
        (apply func)))
 
+;;; TODO move out engine-add-func to the node, work with notes in pure way!
+;;; see https://github.com/kunstmusik/music-examples/blob/master/src/music_examples/sieves.clj
+
 (defn apply-afunc-with-dur
   "Applies an afunc to args, wrapping results with (with-duration dur)."
   [e afunc dur args]
