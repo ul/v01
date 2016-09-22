@@ -1,8 +1,6 @@
 (ns v01.util
   "To fix ancestors' faults..."
-  (:require [pink.simple :as simple]
-            [pink.engine :as engine]
-            [pink.event :refer [event]]
+  (:require [pink.event :refer [event]]
             [pink.util :refer [with-duration]])
   (:import (clojure.lang IDeref)))
 
@@ -16,15 +14,11 @@
        (map deref!*!)
        (apply func)))
 
-;;; TODO move out engine-add-func to the node, work with notes in pure way!
-;;; see https://github.com/kunstmusik/music-examples/blob/master/src/music_examples/sieves.clj
-
 (defn apply-afunc-with-dur
   "Applies an afunc to args, wrapping results with (with-duration dur)."
-  [e afunc dur args]
-  (engine/engine-add-afunc e
-    (with-duration (double dur)
-      (apply!*! afunc args))))
+  [afunc dur args]
+  (with-duration (double dur)
+    (apply!*! afunc args)))
 
 (defn i
   "Csound style note events: audio-func, start, dur, & args.
@@ -32,12 +26,11 @@
   with with-duration call with dur. Most likely used in conjunction
   with add-audio-events so that generated afuncs will be added to
   to an engine."
-  ([e [afunc start dur & args]]
-   (event apply-afunc-with-dur start e afunc dur args)))
+  [[afunc start dur & args]]
+  (event apply-afunc-with-dur start afunc dur args))
 
 (defn sco->events
   "Convert SCO formatted note lists into events by applying i to all notes.
   SCO format follows Csound style note events: audio-func, start, dur, & args."
-  ([notes] (sco->events simple/engine notes))
-  ([e notes]
-   (map #(i e %) notes)))
+  [notes]
+  (map i notes))

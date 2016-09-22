@@ -51,13 +51,9 @@
   (-> score
       (score/convert-measured-score)
       (sco->events)
-      (pink/add-events)))
+      (pink/add-audio-events)))
 
 (comment
-  (-> score
-      (score/convert-measured-score)
-      (sco->events))
-  (drum/kick)
   (play-score score))
 
 (comment
@@ -74,7 +70,8 @@
       ;; rock'n'roll here!
       (->> score
            (score/convert-measured-score)
-           (sco->events e)
+           (sco->events)
+           (engine/audio-events e)
            (engine/engine-add-events e))
       (engine/engine->disk e (str (System/getProperty "user.home")
                                   File/separator "test.wav"))
