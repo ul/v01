@@ -9,18 +9,19 @@
 
   :min-lein-version "2.7.0"
 
-  :dependencies [[org.clojure/clojure "1.9.0-alpha11"]
-                 [org.clojure/clojurescript "1.9.227"]
-                 [org.clojure/core.async "0.2.385" :exclusions [org.clojure/tools.reader]]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha13"]
+                 [org.clojure/clojurescript "1.9.229"]
+                 [org.clojure/core.async "0.2.391" :exclusions [org.clojure/tools.reader]]
                  [kunstmusik/pink "0.3.0"]
                  [kunstmusik/score "0.3.0"]
                  [org.immutant/web "2.1.5"]
                  [compojure "1.6.0-beta1"]
-                 [com.taoensso/sente "1.10.0"]
-                 [carbon "0.2.0-SNAPSHOT"]]
+                 [com.taoensso/sente "1.11.0-alpha5"]
+                 [carbon "0.2.0-SNAPSHOT"]
+                 [carbon/rx "0.2.0-SNAPSHOT"]]
 
   :plugins [[lein-ancient "0.6.10"]
-            [lein-figwheel "0.5.6"]
+            [lein-figwheel "0.5.7"]
             [lein-cljsbuild "1.1.4" :exclusions [org.clojure/clojure]]]
 
   :source-paths ["src"]
@@ -30,10 +31,10 @@
   :main v01.core
 
   :profiles {:uberjar {:aot :all}
-             :dev {:dependencies [[binaryage/devtools "0.8.1"]
-                                  [figwheel-sidecar "0.5.6"]
+             :dev {:dependencies [[binaryage/devtools "0.8.2"]
+                                  [figwheel-sidecar "0.5.7"]
                                   [com.cemerick/piggieback "0.2.1"]
-                                  [ring/ring-devel "1.6.0-beta5"]]
+                                  [ring/ring-devel "1.6.0-beta6"]]
                    ;; need to add dev source path here to get user.clj loaded
                    :source-paths ["src" "dev"]
                    ;; for CIDER

@@ -12,8 +12,8 @@
     [:label
      "Freq"
      [:input.slider
-      {:type      "range"
-       :min       20
-       :max       1760
-       :value     @state/freq
-       :ev-input  #(->> % (input-float) (reset! state/freq))}]]]])
+      {:type     "range"
+       :min      20
+       :max      1760
+       :value    @state/freq
+       :ev-input #(->> % (input-float) (reset! state/freq))}]]]])
