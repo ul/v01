@@ -17,8 +17,7 @@
                  [org.immutant/web "2.1.5"]
                  [compojure "1.6.0-beta1"]
                  [com.taoensso/sente "1.11.0-alpha5"]
-                 [carbon "0.2.0-SNAPSHOT"]
-                 [carbon/rx "0.2.0-SNAPSHOT"]]
+                 [carbon "0.2.0-SNAPSHOT"]]
 
   :plugins [[lein-ancient "0.6.10"]
             [lein-figwheel "0.5.7"]
