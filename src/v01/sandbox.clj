@@ -12,7 +12,7 @@
             [v01.midi :as midi :refer [midi->linear]]
             [v01.instrument.drum-machine :as drum]
             [v01.control :as control]
-            [v01.util :refer [sco->events]]))
+            [v01.util :refer [atom->afn]]))
 
 ;;; Start the engine!
 
@@ -55,7 +55,7 @@
 (defn play-score [score]
   (-> score
       (score/convert-measured-score)
-      (sco->events)
+      (pink/sco->events)
       (pink/add-audio-events)))
 
 (comment
@@ -84,7 +84,7 @@
       ;; rock'n'roll here!
       (->> score
            (score/convert-measured-score)
-           (sco->events)
+           (pink/sco->events)
            (engine/audio-events e)
            (engine/engine-add-events e))
       (engine/engine->disk e (str (System/getProperty "user.home")
@@ -111,7 +111,9 @@
 (defonce akai (midi/add-virtual-device midim "slider/knobs 0"))
 
 #_(defonce _1
-           (midi/bind-device midim "MIDI Mix" "slider/knobs 0"))
+           (do
+             (midi/bind-device midim "MIDI Mix" "slider/knobs 0")
+             (midi/bind-key-processor akai 0)))
 (def get-cc (partial midi/get-cc-atom akai 0))
 
 (def knob-codes
@@ -226,19 +228,19 @@
 
 (def freq-cell (rx/rx (get @state :freq)))
 
-(def gen1 (osc/sine2 (midi/atom->afn freq-cell identity)))
+(def gen1 (osc/sine2 (atom->afn freq-cell identity)))
 
 (def gen11
   (space/pan
     (osc/sine2
-      (osc/sine2 (midi/atom->afn (get-cc 19) #(midi/midi->linear % 0.1 440.0)))
-      (osc/sine2 (midi/atom->afn (get-cc 23) #(midi/midi->linear % 0.1 440.0))))
+      (osc/sine2 (atom->afn (get-cc 19) #(midi/midi->linear % 0.1 440.0)))
+      (osc/sine2 (atom->afn (get-cc 23) #(midi/midi->linear % 0.1 440.0))))
     0.0))
 
 (def gens (vec (for [code slider-codes]
                  (mul 0.125
                       (osc/sine2
-                        (midi/atom->afn
+                        (atom->afn
                           (get-cc code)
                           #(midi/midi->linear % 0.1 880.0)))
                       ))))

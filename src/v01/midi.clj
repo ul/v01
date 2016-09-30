@@ -137,8 +137,6 @@
 
           )))))
 
-(declare bind-key-func key-processor)
-
 (defn bind-device
   [midi-manager ^String hardware-id ^String virtual-device-name]
   {:pre [midi-manager hardware-id virtual-device-name]}
@@ -150,9 +148,7 @@
     (when (not (.isOpen device))
       (.open device))
     (.setReceiver (.getTransmitter device)
-                  (create-receiver virtual-device))
-    ;; TODO move out into a separate function
-    (bind-key-func virtual-device 0 (partial key-processor (:key-bindings virtual-device)))))
+                  (create-receiver virtual-device))))
 
 (defn bind-key-func
   [virtual-device ^long channel ^IFn afn]
@@ -209,17 +205,7 @@
 (defn midi->linear [x from to]
   (-> to (- from) (/ 127.0) (* x) (+ from)))
 
-;; FIXME move to appropriate namespace
-(defn atom->afn
-  [source-atom transform]
-  (let [out ^doubles (util/create-buffer)
-        cur-val (atom @source-atom)]
-    (fn []
-      (let [v @source-atom]
-        (when (not (= @cur-val v))
-          (reset! cur-val v)
-          (Arrays/fill out (double (transform v)))))
-      out)))
+;;
 
 (defn toggle-key [f virtual-device note-num on off]
   (swap! (:key-bindings virtual-device) update note-num
@@ -241,3 +227,5 @@
     (doseq [f (get-in @key-bindings [note-num :off])]
       (f velocity))))
 
+(defn bind-key-processor [virtual-device channel]
+  (bind-key-func virtual-device channel (partial key-processor (:key-bindings virtual-device))))
