@@ -1,4 +1,4 @@
-(ns v01.instrument.drum-machine
+(ns v01.instruments.drum-machine
   (:require [pink.filters :as filters]
             [pink.util :refer [mul sum]]
             [pink.envelopes :as env]

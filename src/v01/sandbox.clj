@@ -10,7 +10,7 @@
             [score.core :as score]
             [carbon.rx :as rx]
             [v01.midi :as midi :refer [midi->linear]]
-            [v01.instrument.drum-machine :as drum]
+            [v01.instruments.drum-machine :as drum]
             [v01.control :as control]
             [v01.util :refer [atom->afn]]))
 
