@@ -4,3 +4,5 @@
             [v01.control :as control]))
 
 (defonce freq (rx/cursor control/state [:freq]))
+
+(defonce volume (rx/cursor control/state [:volume]))

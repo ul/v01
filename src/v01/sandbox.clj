@@ -60,7 +60,7 @@
 
 (comment
   (play-score
-    [:meter 3 8
+    [:meter 3 5
      0 (score/gen-notes
          (cycle [kick hi-hat snare])
          (range 1000)
@@ -68,7 +68,7 @@
          (cycle [kick-params hat-params snare-params]))]))
 
 (comment
-  (pink/set-tempo 120))
+  (pink/set-tempo 90))
 
 (comment
   (pink/clear-engine))
@@ -105,12 +105,12 @@
     c))
 
 (midi/list-devices)
-#_(defonce _2 (midi/device-debug "MIDI Mix"))
+(defonce _2 (midi/device-debug "MIDI Mix"))
 
 (defonce midim (midi/create-manager))
 (defonce akai (midi/add-virtual-device midim "slider/knobs 0"))
 
-#_(defonce _1
+(defonce _1
            (do
              (midi/bind-device midim "MIDI Mix" "slider/knobs 0")
              (midi/bind-key-processor akai 0)))
@@ -144,7 +144,7 @@
   (get-in knobs [(dec column) (dec row)]))
 
 (defn slider [column]
-  (get-in sliders (dec column)))
+  (get sliders (dec column)))
 
 (defn wrap-pan [f]
   (fn [params]

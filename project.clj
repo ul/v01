@@ -12,6 +12,7 @@
   :dependencies [[org.clojure/clojure "1.9.0-alpha13"]
                  [org.clojure/clojurescript "1.9.229"]
                  [org.clojure/core.async "0.2.391" :exclusions [org.clojure/tools.reader]]
+                 [io.replikativ/replikativ "0.2.0-beta2"]
                  [kunstmusik/pink "0.3.0"]
                  [kunstmusik/score "0.3.0"]
                  [org.immutant/web "2.1.5"]

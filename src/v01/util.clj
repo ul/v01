@@ -5,11 +5,12 @@
 
 (defn atom->afn
   [source-atom transform]
-  (let [out ^doubles (util/create-buffer)
-        cur-val (atom @source-atom)]
+  (let [v @source-atom
+        out ^doubles (util/create-buffer v)
+        cur-val (atom v)]
     (fn []
       (let [v @source-atom]
-        (when (not (= @cur-val v))
+        (when (not= @cur-val v)
           (reset! cur-val v)
           (Arrays/fill out (double (transform v)))))
       out)))
